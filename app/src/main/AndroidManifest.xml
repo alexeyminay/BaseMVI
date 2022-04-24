@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MviViewModel">
         <activity
-            android:name=".MainActivity"
+            android:name=".NotesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
