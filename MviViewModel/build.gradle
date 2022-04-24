@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
+group = 'com.github.AlekseyMinai'
+version = '0.0.1'
 
 android {
     compileSdk 31
@@ -26,6 +29,19 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.release
+                groupId = group
+                artifactId = 'mvi-viewmodel'
+                version = version
+            }
+        }
     }
 }
 
