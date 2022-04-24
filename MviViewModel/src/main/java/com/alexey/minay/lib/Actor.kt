@@ -28,7 +28,7 @@ abstract class Actor<Action : Any, Effect : Any, State : Any, Result : Any> {
         mCoroutineScope = null
     }
 
-    protected fun post(effectProvider: () -> Effect) {
+    protected fun emit(effectProvider: () -> Effect) {
         mEffect(effectProvider())
     }
 

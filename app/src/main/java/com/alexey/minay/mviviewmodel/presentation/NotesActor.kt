@@ -5,6 +5,6 @@ import com.alexey.minay.lib.Actor
 class NotesActor: Actor<NotesAction, NotesEffect, NotesState, NotesResult>() {
 
     override suspend fun execute(action: NotesAction, getState: () -> NotesState) {
-        post { NotesEffect.Sample }
+        emit { NotesEffect.Sample }
     }
 }
