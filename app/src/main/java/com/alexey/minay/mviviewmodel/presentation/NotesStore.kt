@@ -4,6 +4,6 @@ import com.alexey.minay.lib.Store
 
 class NotesStore(
     reducer: NotesReducer,
-    executor: NotesExecutor,
+    executor: NotesActor,
     initialState: NotesState = NotesState.default()
-) : Store<NotesState, NotesAction, NotesEvent, NotesResult>(executor, reducer, initialState)
+) : Store<NotesState, NotesAction, NotesEffect, NotesResult>(executor, reducer, initialState)
