@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 group = 'com.github.AlekseyMinai'
-version = '0.0.1'
+version = '0.0.3'
 
 android {
     compileSdk 31
