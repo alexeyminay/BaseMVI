@@ -2,16 +2,17 @@ package com.alexey.minay.mviviewmodel.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.alexey.minay.lib.ViewModelStore
+import com.alexey.minay.lib.Store
+import com.alexey.minay.mviviewmodel.presentation.state.NotesState
 
 class NotesStore(
     reducer: NotesReducer,
     actor: NotesActor,
     initialState: NotesState = NotesState.default()
-) : ViewModelStore<NotesState, NotesAction, NotesEffect, NotesResult>(
-    actor,
-    reducer,
-    initialState
+) : Store<NotesState, NotesAction, NotesEffect, NotesResult>(
+    actor = actor,
+    reducer = reducer,
+    initialState = initialState
 ) {
 
     class Factory(

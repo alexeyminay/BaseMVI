@@ -1,4 +1,10 @@
 package com.alexey.minay.mviviewmodel.domain
 
-class Note {
-}
+import java.util.*
+
+data class Note(
+    val id: Long,
+    val title: String,
+    val date: Date,
+    val description: String?
+)
