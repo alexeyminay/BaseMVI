@@ -2,13 +2,14 @@ package com.alexey.minay.lib
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.alexey.minay.lib.stateManager.StateManager
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
     private val actor: Actor<Action, Effect, State, Result>,
     private val reducer: Reducer<Result, State>,
+    private val stateManager: StateManager,
     initialState: State
 ) : ViewModel() {
 
@@ -26,8 +27,7 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
             coroutineScope = viewModelScope
         )
         viewModelScope.launch {
-            delay(1000)
-            StatePublisher().start()
+            stateManager.register(this@Store)
         }
     }
 
@@ -40,6 +40,9 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
     override fun onCleared() {
         super.onCleared()
         actor.dispose()
+        viewModelScope.launch {
+            stateManager.release(this@Store)
+        }
     }
 
     private fun event(event: Effect) {
@@ -58,6 +61,9 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
 
     private fun reduceBlocking(result: Result) {
         with(reducer) { mState.value = getState().reduce(result) }
+        viewModelScope.launch {
+            stateManager.onStateChanged(this@Store, getState(), result)
+        }
     }
 
 }

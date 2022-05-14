@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.alexey.minay.lib.stateManager.StateManager
 import com.alexey.minay.mviviewmodel.R
 import com.alexey.minay.mviviewmodel.data.NotesRepositoryImpl
 import com.alexey.minay.mviviewmodel.databinding.ActivityMainBinding
@@ -27,7 +28,8 @@ class NotesActivity : AppCompatActivity() {
     private val mStore by viewModels<NotesStore> {
         NotesStore.Factory(
             reducer = NotesReducer(),
-            actor = NotesActor(NotesRepositoryImpl())
+            actor = NotesActor(NotesRepositoryImpl()),
+            stateManager = StateManager.getInstance()
         )
     }
 
