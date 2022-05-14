@@ -9,21 +9,25 @@ abstract class Actor<Action : Any, Effect : Any, State : Any, Result : Any> {
 
     private lateinit var mEffect: (Effect) -> Unit
     private lateinit var mReduce: (Result) -> Unit
+    private lateinit var mReduceBlocking: (Result) -> Unit
     private var mCoroutineScope: CoroutineScope? = null
 
     fun init(
         event: (Effect) -> Unit,
         reduce: (Result) -> Unit,
+        reduceBlocking: (Result) -> Unit,
         coroutineScope: CoroutineScope
     ) {
         this.mEffect = event
         this.mReduce = reduce
         this.mCoroutineScope = coroutineScope
+        this.mReduceBlocking = reduceBlocking
     }
 
     fun dispose() {
         mEffect = {}
         mReduce = {}
+        mReduceBlocking = {}
         mCoroutineScope?.cancel()
         mCoroutineScope = null
     }
@@ -34,6 +38,10 @@ abstract class Actor<Action : Any, Effect : Any, State : Any, Result : Any> {
 
     protected fun reduce(resultProvider: () -> Result) {
         mReduce(resultProvider())
+    }
+
+    protected suspend fun reduceSuspend(resultProvider: () -> Result) {
+        mReduceBlocking(resultProvider())
     }
 
     abstract suspend fun execute(action: Action, getState: () -> State)

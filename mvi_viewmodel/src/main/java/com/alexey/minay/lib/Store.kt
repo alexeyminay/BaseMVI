@@ -21,6 +21,7 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
         actor.init(
             event = ::event,
             reduce = ::reduce,
+            reduceBlocking = ::reduceBlocking,
             coroutineScope = viewModelScope
         )
     }
@@ -46,8 +47,12 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
 
     private fun reduce(result: Result) {
         viewModelScope.launch {
-            with(reducer) { mState.value = getState().reduce(result) }
+            reduceBlocking(result)
         }
+    }
+
+    private fun reduceBlocking(result: Result) {
+        with(reducer) { mState.value = getState().reduce(result) }
     }
 
 }
