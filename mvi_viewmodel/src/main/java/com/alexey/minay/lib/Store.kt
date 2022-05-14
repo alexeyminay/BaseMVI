@@ -27,7 +27,7 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
         )
         viewModelScope.launch {
             delay(1000)
-            StatePublisher().post()
+            StatePublisher().start()
         }
     }
 
