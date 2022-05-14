@@ -2,6 +2,7 @@ package com.alexey.minay.lib
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,10 @@ abstract class Store<State : Any, Action : Any, Effect : Any, Result : Any>(
             reduceBlocking = ::reduceBlocking,
             coroutineScope = viewModelScope
         )
+        viewModelScope.launch {
+            delay(1000)
+            StatePublisher().post()
+        }
     }
 
     fun accept(action: Action) {
