@@ -28,7 +28,7 @@ class StateConverter {
             states.values.map { entities ->
                 entities.mapIndexed { index, entity ->
                     """
-                    <a href="#hidden$index" onclick="view('hidden$index'); return false" style="font-size: 120%; font-family: monospace; color: #cd66cc; padding: 12px 48px;">$index. ${entity.stateOrNull?.result}</a>
+                    <a href="#hidden$index" onclick="view('hidden$index'); return false" style="font-size: 120%; font-family: monospace; color: #cd66cc; padding: 0px 48px;">$index. ${entity.stateOrNull?.result?.prettyResult()}</a>
                      <div id="hidden$index" style="display: none; padding: 12px 48px;">
                          <p>${entity.stateOrNull?.state.toString().pretty()}</p>
                      </div>
@@ -84,5 +84,8 @@ class StateConverter {
         }
         return prettyString.toString()
     }
+
+    private fun Any.prettyResult() = toString().substringAfter("$")
+        .substringBefore("@")
 
 }
