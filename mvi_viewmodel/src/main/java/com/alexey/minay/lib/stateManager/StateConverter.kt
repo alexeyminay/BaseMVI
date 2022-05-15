@@ -28,7 +28,9 @@ class StateConverter {
             states.values.map { entities ->
                 entities.mapIndexed { index, entity ->
                     """
-                    <a href="#hidden$index" onclick="view('hidden$index'); return false" style="font-size: 120%; font-family: monospace; color: #cd66cc; padding: 0px 48px;">$index. ${entity.stateOrNull?.result?.prettyResult()}</a>
+                    <div style="padding: 12px 48px; border-width:1px; border-style:solid; border-color: #cd66cc77; margin: 10px">    
+                    <a style="font-size: 120%; font-family: monospace; color: #cd66cc;" href="#hidden$index" onclick="view('hidden$index'); return false">$index. ${entity.stateOrNull?.result?.prettyResult()}</a>
+                     </div>
                      <div id="hidden$index" style="display: none; padding: 12px 48px;">
                          <p>${entity.stateOrNull?.state.toString().pretty()}</p>
                      </div>
