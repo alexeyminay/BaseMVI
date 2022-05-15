@@ -15,23 +15,28 @@ class StateConverter {
              <head>
               <meta charset="utf-8">
               <title>Глобальные стили</title>
+              </head>
+              <body>
+
+              <h1>States</h1>
               <script>function view(n) {
                   style = document.getElementById(n).style;
                   style.display = (style.display == 'block') ? 'none' : 'block';
-              }</script>
-             </head>
-             <body>
-
-             <h1>States</h1>
+              }
+              </script>
              ${
             states.values.map { entities ->
-                entities.map { entity ->
+                entities.mapIndexed { index, entity ->
                     """
-                     <h4 style="font-size: 120%; font-family: monospace; color: #cd66cc">${entity.stateOrNull?.result}</h4>
-                     <p>${entity.stateOrNull?.state.toString().pretty()}</p>
+                    <a href="#hidden$index" onclick="view('hidden$index'); return false" style="font-size: 120%; font-family: monospace; color: #cd66cc">$index. ${entity.stateOrNull?.result}</a>
+                     <div id="hidden$index" style="display: none;">
+                         <p>${entity.stateOrNull?.state.toString().pretty()}</p>
+                     </div>
+                     <div/>
                  """.trimIndent()
                 }
-            }
+            }.flatten()
+                .joinToString(separator = "") { "$it\n" }
         }
 
              </body>
