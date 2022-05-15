@@ -31,7 +31,7 @@ class StateManager private constructor(
         state: State,
         result: Result
     ) {
-        storage.save(store.hashCode(), state)
+        storage.save(store.hashCode(), state, result)
         checkKeys()
     }
 

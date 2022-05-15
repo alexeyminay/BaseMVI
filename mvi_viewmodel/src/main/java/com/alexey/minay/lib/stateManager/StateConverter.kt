@@ -4,22 +4,37 @@ class StateConverter {
 
     private val mHeader = "HTTP/1.1 200 OK\\r\\nContent-Type: text/html\\r\\n\\r\\n"
 
-    fun convert(states: Map<Int, List<Any>>): String {
+    fun convert(states: Map<Int, List<StateStorageEntity>>): String {
         return "$mHeader${createHtml(states)}"
     }
 
-    private fun createHtml(states: Map<Int, List<Any>>): String {
-        val state =
-            "${states.values.map { "${it.map { "<br>${it.toString().pretty()}<br>" }}\n\n" }}"
+    private fun createHtml(states: Map<Int, List<StateStorageEntity>>): String {
         return """
             <!DOCTYPE html>
             <html>
-            <body>
+             <head>
+              <meta charset="utf-8">
+              <title>Глобальные стили</title>
+              <script>function view(n) {
+                  style = document.getElementById(n).style;
+                  style.display = (style.display == 'block') ? 'none' : 'block';
+              }</script>
+             </head>
+             <body>
 
-            <h1>States</h1>
-            <p>$state</p>
+             <h1>States</h1>
+             ${
+            states.values.map { entities ->
+                entities.map { entity ->
+                    """
+                     <h4 style="font-size: 120%; font-family: monospace; color: #cd66cc">${entity.stateOrNull?.result}</h4>
+                     <p>${entity.stateOrNull?.state.toString().pretty()}</p>
+                 """.trimIndent()
+                }
+            }
+        }
 
-            </body>
+             </body>
             </html>
         """.trimIndent()
     }

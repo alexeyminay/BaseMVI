@@ -2,11 +2,16 @@ package com.alexey.minay.lib.stateManager
 
 class StateStorage {
 
-    private val mStates = mutableMapOf<Int, MutableList<Any>>()
+    private val mStates = mutableMapOf<Int, MutableList<StateStorageEntity>>()
 
-    fun <State : Any> save(key: Int, state: State) {
+    fun <State : Any, Result : Any> save(key: Int, state: State, result: Result) {
         mStates[key] = (mStates[key] ?: mutableListOf()).apply {
-            add(state)
+            add(
+                StateStorageEntity.State(
+                    state = state,
+                    result = result
+                )
+            )
         }
     }
 
@@ -16,7 +21,7 @@ class StateStorage {
         }
     }
 
-    fun getAll(): Map<Int, List<Any>> = mStates
+    fun getAll(): Map<Int, List<StateStorageEntity>> = mStates
 
     fun getKeysCount() = mStates.keys.count()
 
