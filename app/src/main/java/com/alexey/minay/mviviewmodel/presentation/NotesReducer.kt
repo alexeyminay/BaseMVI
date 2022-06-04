@@ -1,10 +1,7 @@
 package com.alexey.minay.mviviewmodel.presentation
 
 import com.alexey.minay.lib.Reducer
-import com.alexey.minay.mviviewmodel.domain.Note
-import com.alexey.minay.mviviewmodel.presentation.state.FiltersState
 import com.alexey.minay.mviviewmodel.presentation.state.NotesState
-import java.util.*
 
 class NotesReducer : Reducer<NotesResult, NotesState> {
 
@@ -14,8 +11,7 @@ class NotesReducer : Reducer<NotesResult, NotesState> {
             NotesResult.SetErrorType -> copy(type = NotesState.Type.ERROR)
             is NotesResult.UpdateNotes -> copy(
                 notes = result.notes,
-                type = NotesState.Type.LIST,
-                filteredNotes = result.notes.filter(filtersState)
+                type = NotesState.Type.LIST
             )
             NotesResult.ChangeShowPreviousFilterState ->
                 changeShowPreviousFilterState()
@@ -31,8 +27,7 @@ class NotesReducer : Reducer<NotesResult, NotesState> {
             showPrevious = !filtersState.showPrevious
         )
         return copy(
-            filtersState = newFilterState,
-            filteredNotes = notes.filter(newFilterState)
+            filtersState = newFilterState
         )
     }
 
@@ -41,24 +36,8 @@ class NotesReducer : Reducer<NotesResult, NotesState> {
             isWithDescriptionEnabled = !filtersState.isWithDescriptionEnabled
         )
         return copy(
-            filtersState = newFilterState,
-            filteredNotes = notes.filter(newFilterState)
+            filtersState = newFilterState
         )
     }
-
-    private fun List<Note>.filter(filterState: FiltersState) =
-        asSequence()
-            .filter {
-                when {
-                    filterState.isWithDescriptionEnabled -> !it.description.isNullOrBlank()
-                    else -> true
-                }
-            }
-            .filter {
-                when {
-                    filterState.showPrevious -> true
-                    else -> it.date.time >= Date().time
-                }
-            }.toList()
 
 }

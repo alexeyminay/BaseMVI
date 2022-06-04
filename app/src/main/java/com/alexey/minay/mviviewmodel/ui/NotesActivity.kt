@@ -11,6 +11,7 @@ import com.alexey.minay.lib.stateManager.StateManager
 import com.alexey.minay.mviviewmodel.R
 import com.alexey.minay.mviviewmodel.data.NotesRepositoryImpl
 import com.alexey.minay.mviviewmodel.databinding.ActivityMainBinding
+import com.alexey.minay.mviviewmodel.domain.Note
 import com.alexey.minay.mviviewmodel.presentation.*
 import com.alexey.minay.mviviewmodel.presentation.state.NotesState
 import kotlinx.coroutines.flow.launchIn
@@ -64,25 +65,20 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun subscribeToStore() {
-        mStore.state
-            .flowWithLifecycle(lifecycle)
-            .onEach(::render)
-            .launchIn(lifecycleScope)
-
         mStore.effects
             .flowWithLifecycle(lifecycle)
             .onEach(::handleEffects)
             .launchIn(lifecycleScope)
+
+        with(mStore.state) {
+            render(NotesState::type, ::renderType)
+            render(NotesState::filteredNotes, ::renderList)
+            render(NotesState::isFilterOpened, ::renderFilter)
+        }
     }
 
-    private fun render(state: NotesState) {
-        renderType(state)
-        renderList(state)
-        renderFilter(state)
-    }
-
-    private fun renderType(state: NotesState) = with(mBinding) {
-        when (state.type) {
+    private fun renderType(state: NotesState.Type) = with(mBinding) {
+        when (state) {
             NotesState.Type.INIT -> {
                 progress.isVisible = true
                 info.isVisible = false
@@ -97,19 +93,17 @@ class NotesActivity : AppCompatActivity() {
                 progress.isVisible = false
                 info.isVisible = true
                 notes.isVisible = false
-                info.text = "Error..."
+                info.text = "Error try refreshing..."
             }
         }
     }
 
-    private fun renderList(state: NotesState) {
-        mAdapter.submitList(state.filteredNotes)
+    private fun renderList(state: List<Note>) {
+        mAdapter.submitList(state)
     }
 
-    private fun renderFilter(state: NotesState) {
-        val isAlreadyOpened = supportFragmentManager.findFragmentByTag(FILTER_TAG) != null
-
-        if (state.isFilterOpened && !isAlreadyOpened) {
+    private fun renderFilter(state: Boolean) {
+        if (state) {
             FilterBottomSheet.newInstance().show(supportFragmentManager, FILTER_TAG)
         }
     }
