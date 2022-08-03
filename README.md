@@ -1,2 +1,2 @@
-# MviViewModel
-[![](https://jitpack.io/v/AlekseyMinai/MviViewModel.svg)](https://jitpack.io/#AlekseyMinai/MviViewModel)
+# BaseMVI
+[![](https://jitpack.io/v/AlekseyMinai/BaseMVI.svg)](https://jitpack.io/#AlekseyMinai/BaseMVI)

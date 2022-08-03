@@ -13,6 +13,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "MviViewModel"
+rootProject.name = "BaseMVI"
 include ':app'
-include ':mvi_viewmodel'
+include ':mvi_base'

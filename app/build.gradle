@@ -7,11 +7,11 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.alexey.minay.mviviewmodel"
+        applicationId "com.alexey.minay.base_mvi"
         minSdk 21
         targetSdk 31
         versionCode 1
-        versionName "0.0.1"
+        versionName "0.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation project(':mvi_viewmodel')
+    implementation project(':mvi_base')
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
